@@ -5,6 +5,7 @@
 #include <time.h>
 #include"mapa.c"
 #include "definicoes.h"
+#include "interface.c"
 
 #define limpaBuf while(getchar()!='\n');
 
@@ -227,7 +228,7 @@ int main(){
     
     mapa.pilulas = 0;
     mapa.acabou = 1;
-    srand(time(0));
+    srand(time(NULL));
     atribuiUmAincrementoDosFantasmas();
     char acao;
 
