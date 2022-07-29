@@ -1,6 +1,6 @@
-#ifndef BIBLIOTECA_VITOR_h
-#define BIBLIOTECA_VITOR_h
-#include <stdio.h>/*bibliotecas necessarias para o funcionamente das funcoes desta biblioteca*/
+#ifndef definicoes.h
+#define definicoes.h
+#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
@@ -8,14 +8,20 @@
 #define BAIXO 's'
 #define DIREITA 'd'
 #define ESQUERDA 'a'
+#define ESPECIAL 'b'
 #define HEROI '@'
 #define VAZIO '.'
 #define quantFantasmas 2
+#define PILULA 'P'
+#define FANTASMA 'c'
+#define paredeVer '|'
+#define paredeHor '-'
 
 typedef struct{
     int x;
     int y;
     int incremento;
+    int existe;
     
 }fantasma;
 
@@ -25,7 +31,9 @@ typedef struct{
     int colunas;
     int x;
     int y;
+    int pilulas;
     fantasma fantasmas[quantFantasmas];
+    int acabou;
 
     
 }novoMapa;
@@ -38,4 +46,4 @@ void aumentaMapa(novoMapa *ptr);
 void preencheMapa(FILE *f, novoMapa *ptr);
 void imprimeMapa(novoMapa *ptr);
 
-#endif /*minhas funcoes*/
+#endif 

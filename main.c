@@ -5,6 +5,7 @@
 #include <time.h>
 #include"mapa.c"
 #include "definicoes.h"
+
 #define limpaBuf while(getchar()!='\n');
 
 
@@ -82,7 +83,7 @@ void decideParaOndeAndar(int incremento, int qualFantasma){
     }
 }
 void verificaSeHeroiFoiPego(){
-    imprimeMapa(&mapa);
+    
     if(mapa.matriz[mapa.y][mapa.x]!= HEROI){
         mapa.acabou = 0;
     }
@@ -106,6 +107,9 @@ void pegouPilula(int x, int y){
 void atacaY(int incremento){
     
     for(int i = 1; i<=3 && mapa.y + i*incremento>0 && mapa.y + i*incremento < mapa.linhas-1; i++){
+        if(mapa.matriz[mapa.y + incremento*i][mapa.x] == paredeHor || mapa.matriz[mapa.y + incremento*i][mapa.x] == paredeVer){
+            return;
+        }
         if(mapa.matriz[mapa.y + incremento*i][mapa.x] == FANTASMA){
             
             
@@ -124,6 +128,9 @@ void atacaY(int incremento){
 }
 void atacaX(int incremento){
     for(int i = 0; i<=3 && mapa.x + i*incremento > 0 && mapa.x + i*incremento < mapa.colunas - 2; i++){
+        if(mapa.matriz[mapa.y][mapa.x + i*incremento] == paredeHor || mapa.matriz[mapa.y][mapa.x + i*incremento] == paredeVer){
+            return;
+        }
         if(mapa.matriz[mapa.y][mapa.x + i*incremento] == FANTASMA){
             for(int j = 0; quantFantasmas; j++){
                 if(mapa.fantasmas[j].x == mapa.x + i*incremento && 

@@ -1,3 +1,5 @@
+
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<strings.h>
@@ -19,6 +21,10 @@ void preencheMapa(FILE *f, novoMapa *pt){
     }
 }
 void imprimeMapa(novoMapa *pt){
+    if(pt->pilulas > 0)
+        printf("pilulas: %d\n", pt->pilulas);
+    else
+        printf("\n");
     for(int i = 0; i < pt->linhas; i++){
         for(int j = 0; j < pt->colunas; j++){
             printf("%c", pt->matriz[i][j]);
