@@ -121,7 +121,7 @@ void atacaY(int incremento){
                         
                         mapa.matriz[mapa.y + incremento*i][mapa.x] = VAZIO;
                         mapa.fantasmas[j].existe = 0;
-                        return;
+                        
                 }
             }
         }
@@ -133,12 +133,12 @@ void atacaX(int incremento){
             return;
         }
         if(mapa.matriz[mapa.y][mapa.x + i*incremento] == FANTASMA){
-            for(int j = 0; quantFantasmas; j++){
+            for(int j = 0; j < quantFantasmas; j++){
                 if(mapa.fantasmas[j].x == mapa.x + i*incremento && 
                     mapa.fantasmas[j].y == mapa.y){
                         mapa.matriz[mapa.y][mapa.x + i*incremento] = VAZIO;
                         mapa.fantasmas[j].existe = 0;
-                        return;
+                        
 
                     }
             }
@@ -207,14 +207,14 @@ void sorteiaPilulas(){
         
     }
 }
-void verificaGanhou(){
+int verificaGanhou(){
     for(int i = 0; i<quantFantasmas; i++){
         if(mapa.fantasmas[i].existe == 1){
-            return;
+            return 0;
         }
     }
     printf("voce ganhou!");
-    exit(1);
+    return 1;
 }
 FILE* abriArq(char *nome, char *modo){
     FILE *f = fopen(nome, modo);
@@ -229,7 +229,7 @@ void selecionaDificuldade(){
     printf("digite a dificuldade desejada\n");
     printf("dificil\nmedio\nfacil\n");
     scanf("%s", dificuldade);
-
+    limpaBuf;
     if(strcmp(dificuldade, "dificil") == 0){
         mapa.dificuldade = 'd';
     }else
@@ -280,31 +280,58 @@ void controlaFantasma(){
         movimentaFantasma(i);
     }
 }
+int jogarNovamente(){
+    char querOuNao[3];
+    scanf("%s", querOuNao);
+    if(strcmp(querOuNao, "sim") == 0){
+        return 1;
+    }else
+        if(strcmp(querOuNao, "nao") == 0){
+            return 0;
+        }else{
+            printf("digite uma opcao valida\n");
+            return jogarNovamente();
+            
+        }
+}
+void liberaMapaEfantasma(){
+    free(mapa.fantasmas);
+  
+    for(int i = 0; i<mapa.linhas; i++){
+        free(mapa.matriz[i]);
+    }
+    free(mapa.matriz);
+   
+}
 int main(){
     
-
-    selecionaDificuldade();
-
-    mapa.pilulas = 0;
-    mapa.acabou = 1;
-    srand(time(NULL)); 
-    char acao;
-
-    
-    abriArqDaDificuldade();
-    
-  
-    imprimeMapa(&mapa);
     do{
-        acao = getchar();
-        movimentaPlayer(acao);
-        controlaFantasma();
-        sorteiaPilulas();
-        limpaBuf;
-        system("cls");
-        imprimeMapa(&mapa);
-        verificaGanhou();
+        selecionaDificuldade();
 
-    }while(mapa.acabou);
-    printf("\nvoce perdeu!");
+        mapa.pilulas = 0;
+        mapa.acabou = 1;
+        srand(time(NULL)); 
+        char acao;
+
+        
+        abriArqDaDificuldade();
+        
+    
+        imprimeMapa(&mapa);
+        do{
+            acao = getchar();
+            movimentaPlayer(acao);
+            controlaFantasma();
+            sorteiaPilulas();
+            limpaBuf;
+            system("cls");
+            imprimeMapa(&mapa);
+            if(verificaGanhou())
+                break;
+
+        }while(mapa.acabou);
+        (mapa.acabou)?printf(""):printf("voce perdeu!\n");
+        printf("deseja jogar Novamente?\n");
+        liberaMapaEfantasma();
+    }while(jogarNovamente());
 }
